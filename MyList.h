@@ -14,11 +14,11 @@ public:
 
     // construct, copy, assign, destroy
     myList() { create(); }
-    explicit myList(size_t n, const T& val = T()) { create(n, val); }
-    myList(const myList& L) { create(L.begin(), L.end()); }
+/*    explicit myList(size_t n, const T& val = T()) { create(n, val); }
+    List(const myList& L) { create(L.begin(), L.end()); }
     ~myList() { uncreate(); }
 
-    myList& operator= (const myList&);
+    myList& operator= (const myList&);*/
 
     size_t size() const { return tail - head; }
     iterator begin() { return head; }
@@ -26,6 +26,13 @@ public:
     iterator end() { return tail; }
     const_iterator end() const { return tail; }
 
+    void push_back(const T& val){
+        node *ptr = alloc.allocate(1);
+        head = &ptr->value;
+        ptr->next = 0;
+        ptr->previous = 0;
+
+    }
 
 private:
     struct node{
@@ -33,39 +40,42 @@ private:
         node* next;
         node* previous;
     };
-    node* head;
-    node* tail;
-    node* limit;
+    T* head;
+    T* tail;
     std::allocator<node> alloc;
 
     void create();
-    void create(size_t, const T&);
+/*    void create(size_t, const T&);
     void create(const_iterator, const_iterator);
     void uncreate();
+*/
     void grow();
     void unchecked_append(const T&);
+
+
 };
 
-template <class T>
+/*template <class T>
 myList<T>& myList<T>::operator=(const myList& rhs){
     if (&rhs != this){
         uncreate();
         create(rhs.begin(), rhs.end());
     }
     return *this;
-}
+}*/
 
 template <class T>
 void myList<T>::create(){
-    head = tail = limit = 0;
+    head = tail = 0;
 }
 
+/*
 template <class T>
 void myList<T>::create(size_t n, const T& val){
     head = alloc.allocate(n);
-    limit = tail = head + n;
+    tail = head + n;
     iterator it = head;
-    while (it != limit){
+    while (it != tail){
         it->value = val;
         ++it;
     }
@@ -74,10 +84,10 @@ void myList<T>::create(size_t n, const T& val){
 template <class T>
 void myList<T>::create(const_iterator first, const_iterator end){
     head = alloc.allocate(end - first);
-    limit = tail = head + (end - first);
+    tail = head + (end - first);
     iterator it = head;
     iterator copy = first;
-    while (it != limit){
+    while (it != tail){
         it->value = copy->value;
         it++;
         copy++;
@@ -87,6 +97,6 @@ void myList<T>::create(const_iterator first, const_iterator end){
 template <class T>
 void myList<T>::uncreate() {
 
-}
+}*/
 
 #endif
